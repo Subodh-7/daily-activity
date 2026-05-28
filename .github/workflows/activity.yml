@@ -1,0 +1,33 @@
+name: Daily Activity
+
+on:
+  schedule:
+    - cron: "0 18 * * *"
+  workflow_dispatch:
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Update Activity File
+        run: |
+          echo "Last Updated: $(date)" >> activity.txt
+
+      - name: Commit Changes
+        run: |
+          git config --global user.name "Subodh-7"
+          git config --global user.email "subodhrautssr7@gmail.com"
+
+          git add .
+          git commit -m "Daily auto commit" || echo "No changes"
+
+      - name: Push Changes
+        run: |
+          git push
